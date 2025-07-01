@@ -29,7 +29,7 @@ class Feed extends Component {
                             </div>
                             <img src={more} alt="Mais" />
                         </header>
-                        <img src={`http://192.168.0.100:3050/files/${post.image}`} alt="" />
+                        <img src={`http://localhost:3333/files/${post.image}`} alt="" />
                         <footer>
                             <div className="actions">
                                 <img src={like} alt="like" />

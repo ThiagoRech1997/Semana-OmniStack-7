@@ -1,75 +1,61 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 import './New.css'
 
-class New extends Component {
-    state = {
-        image: null,
-        author: '',
-        place: '',
-        description: '',
-        hashtags: '',
-    }
+export default function New() {
+    const [image, setImage] = useState(null);
+    const [author, setAuthor] = useState('');
+    const [place, setPlace] = useState('');
+    const [description, setDescription] = useState('');
+    const [hashtags, setHashtags] = useState('');
+    const navigate = useNavigate();
 
-    handleSubmit = async e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-
         const data = new FormData();
-
-        data.append('image', this.state.image);
-        data.append('author', this.state.author);
-        data.append('place', this.state.place);
-        data.append('description', this.state.description);
-        data.append('hashtags', this.state.hashtags);
-
+        data.append('image', image);
+        data.append('author', author);
+        data.append('place', place);
+        data.append('description', description);
+        data.append('hashtags', hashtags);
         await api.post('/posts', data);
-        this.props.history.push('/');
-    }
+        navigate('/');
+    };
 
-    handleImageChange = e => {
-        this.setState({ image: e.target.files[0] });
-    }
-
-    handleChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-    render() {
-        return(
-            <form id="new-post" onSubmit={this.handleSubmit}>
-                <input type="file" onChange={this.handleImageChange}/>
-                <input 
-                    type="text"
-                    name="author"
-                    placeholder="Autor do Post"
-                    onChange={this.handleChange}
-                    value={this.state.author}
-                />
-                <input 
-                    type="text"
-                    name="place"
-                    placeholder="Local do Post"
-                    onChange={this.handleChange}
-                    value={this.state.place}
-                />
-                <input 
-                    type="text"
-                    name="description"
-                    placeholder="Descricao do Post"
-                    onChange={this.handleChange}
-                    value={this.state.description}
-                />
-                <input 
-                    type="text"
-                    name="hashtags"
-                    placeholder="Hashtags do Post"
-                    onChange={this.handleChange}
-                    value={this.state.hashtags}
-                />
-                <button type="submit">Enviar</button>
-            </form>
-        );
-    }
+    return (
+        <form id="new-post" onSubmit={handleSubmit}>
+            <input type="file" onChange={e => setImage(e.target.files[0])}/>
+            <input 
+                type="text"
+                name="author"
+                placeholder="Autor do Post"
+                onChange={e => setAuthor(e.target.value)}
+                value={author}
+            />
+            <input 
+                type="text"
+                name="place"
+                placeholder="Local do Post"
+                onChange={e => setPlace(e.target.value)}
+                value={place}
+            />
+            <input 
+                type="text"
+                name="description"
+                placeholder="Descricao do Post"
+                onChange={e => setDescription(e.target.value)}
+                value={description}
+            />
+            <input 
+                type="text"
+                name="hashtags"
+                placeholder="Hashtags do Post"
+                onChange={e => setHashtags(e.target.value)}
+                value={hashtags}
+            />
+            <button type="submit">Enviar</button>
+        </form>
+    );
 }
-
-export default New;
